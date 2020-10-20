@@ -1,0 +1,31 @@
+#!/bin/sh
+
+BUILD_DIR=$1
+ENV_DIR=$3
+
+if [ ! -f "$ENV_DIR/WORKING_DIR" ]; then
+  echo "WORKING_DIR not set. Aborting."
+  exit 1
+fi
+
+WORKING_DIR="$(cat "$ENV_DIR/WORKING_DIR")"
+
+if [ ! -f "$ENV_DIR/PROCFILE" ]; then
+  echo "PROCFILE not set. Aborting."
+  exit 1
+fi
+
+PROCFILE="$(cat "$ENV_DIR/PROCFILE")"
+
+if [ ! -d "$BUILD_DIR/$WORKING_DIR" ]; then
+  echo "No directory found at $WORKING_DIR. Aborting."
+  exit 1
+fi
+
+cp -rf "$BUILD_DIR/$WORKING_DIR/package.json" "$BUILD_DIR/package.json"
+cp -rf "$BUILD_DIR/$WORKING_DIR/yarn.lock" "$BUILD_DIR/yarn.lock"
+
+cp -rf "$PROCFILE" "$BUILD_DIR/ProcFile"
+
+
+
